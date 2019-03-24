@@ -29,8 +29,7 @@ public class JdbcDogService implements DogService {
         return dogDao.deleteDog(id);
     }
 
-    // doesn't have to be @Transactional since doSaveDogs() is transactional anyway
-    @Override public void createNewDogsAndIgnoreAlreadySaved(List<Dog> dogs) {
+    @Transactional @Override public void createNewDogsAndIgnoreAlreadySaved(List<Dog> dogs) {
         List<Dog> toSave = new ArrayList<>();
         for (Dog dog : dogs) if(dog.getId() == null) toSave.add(dog);
         doSaveDogs(toSave);
