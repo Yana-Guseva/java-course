@@ -28,10 +28,10 @@ public class Human {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return id == human.id;
+        return id != 0 && id == human.id;
     }
 
     @Override public int hashCode() {
-        return Objects.hash(id);
+        return 42;
     }
 }
