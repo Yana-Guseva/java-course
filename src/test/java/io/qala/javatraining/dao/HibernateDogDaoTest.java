@@ -3,6 +3,7 @@ package io.qala.javatraining.dao;
 import io.qala.javatraining.HibernateDaoTest;
 import io.qala.javatraining.domain.Dog;
 import io.qala.javatraining.domain.ObjectNotFoundException;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.testng.annotations.Test;
@@ -20,13 +21,18 @@ import static org.testng.Assert.*;
 
 @Test @HibernateDaoTest
 public class HibernateDogDaoTest extends AbstractTransactionalTestNGSpringContextTests {
+    @Autowired
+    private SessionFactory sessionFactory;
+    @Autowired
+    private HibernateDogDao dao;
+
     /** Find the description of the puzzle in the root README.md */
     public void getsTheSameDogAsWasSaved() {
         Dog original = Dog.random();
         dao.createDog(original);
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().clear();
         Dog fromDb = dao.getDog(original.getId());
         assertReflectionEquals(original, fromDb);
     }
-
-    @Autowired private HibernateDogDao dao;
 }
